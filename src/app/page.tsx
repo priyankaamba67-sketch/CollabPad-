@@ -1,6 +1,5 @@
 // app/page.tsx
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -11,7 +10,6 @@ export default function Home() {
         <nav className="flex gap-6">
           <Link href="/documents/111" className="hover:text-indigo-500">Docs</Link>
           <Link href="/login" className="hover:text-indigo-500">Sign In</Link>
-      <Image src={'/example-img.jpg'} alt={"image"} width={50} height={5}></Image>
         </nav>
       </header>
 
