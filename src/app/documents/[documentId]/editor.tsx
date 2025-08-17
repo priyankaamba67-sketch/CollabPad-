@@ -1,5 +1,8 @@
 "use client";
-
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
+import { TableKit } from "@tiptap/extension-table";
+import { Image } from "@tiptap/extension-image";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -13,14 +16,39 @@ export const Editor = () => {
       },
     },
 
-    extensions: [StarterKit],
-    content: "<p>hello world! </p>",
+    extensions: [
+      StarterKit,
+      Image,
+      TableKit.configure({
+        table: { resizable: true },
+      }),
+      TaskList,
+      TaskItem.configure({ nested: true }),
+    ],
+    content: `
+        <table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th colspan="3">Description</th>
+            </tr>
+            <tr>
+              <td>Cyndi Lauper</td>
+              <td>Singer</td>
+              <td>Songwriter</td>
+              <td>Actress</td>
+            </tr>
+          </tbody>
+        </table>
+      `,
+    immediatelyRender: false,
   });
 
   return (
-    <div className="size-full overflow-auto bg-[#f9fbfd] px-4 print:p-0 print:bg-white print:overflow-visible">
-      <div className="-max flex <justify-center w-[816px] py-4 print:py-0 max-auto print:w-full print:min-w-0"></div>
-      <EditorContent editor={editor} />
+    <div className="size-full overflow-x-auto bg-[#f9fbfd] px-4 print:p-0 print:bg-white print:overflow-visible">
+      <div className="min-w-max flex  justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 };
