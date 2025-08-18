@@ -1,12 +1,15 @@
 "use client";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
+import { TaskItem, TaskList } from '@tiptap/extension-list'
 import { TableKit } from "@tiptap/extension-table";
 import { Image } from "@tiptap/extension-image";
+import Underline from "@tiptap/extension-underline";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useEffect } from "react";
+import { useEditorStore } from "@/app/store/use-editor-store";
 
 export const Editor = () => {
+  const { setEditor } = useEditorStore();
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -18,6 +21,7 @@ export const Editor = () => {
 
     extensions: [
       StarterKit,
+      Underline,
       Image,
       TableKit.configure({
         table: { resizable: true },
@@ -43,6 +47,11 @@ export const Editor = () => {
       `,
     immediatelyRender: false,
   });
+
+  useEffect(() => {
+    setEditor(editor);
+    return () => setEditor(null);
+  }, [editor, setEditor]);
 
   return (
     <div className="size-full overflow-x-auto bg-[#f9fbfd] px-4 print:p-0 print:bg-white print:overflow-visible">

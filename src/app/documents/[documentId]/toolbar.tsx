@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { useEditorStore } from "@/app/store/use-editor-store";
+import { useEffect, useState } from "react";
 
 interface ToolbarButtonProps {
   onClick?: () => void;
@@ -32,8 +33,8 @@ export const ToolbarButton = ({
     <button
       onClick={onClick}
       className={cn(
-        "text-sm h-7 flex items-center justify-center rounded-b-sm hover:bg-neutral-200/80",
-        isActive && "bg-neutral-200/80"
+        "text-sm h-7 w-7 flex items-center justify-center rounded-sm hover:bg-neutral-200/80",
+        isActive && "bg-neutral-300 text-black" // darker active state
       )}
     >
       <Icon className="size-4" />
@@ -43,6 +44,23 @@ export const ToolbarButton = ({
 
 export const Toolbar = () => {
   const { editor } = useEditorStore();
+
+  const [, setUpdateCount] = useState(0);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handler = () => setUpdateCount((c) => c + 1);
+
+    editor.on("selectionUpdate", handler);
+    editor.on("transaction", handler);
+
+    return () => {
+      editor.off("selectionUpdate", handler);
+      editor.off("transaction", handler);
+    };
+  }, [editor]);
+
   const sections: {
     label: string;
     icon: LucideIcon;
@@ -53,7 +71,7 @@ export const Toolbar = () => {
       {
         label: "undo",
         icon: Undo2Icon,
-        onClick: () => console.log("undo clicked"),
+        onClick: () => editor?.chain().focus().undo().run(),
       },
       {
         label: "Redo",
@@ -81,44 +99,44 @@ export const Toolbar = () => {
       {
         label: "Bold",
         icon: BoldIcon,
-        isActive: editor?.isActive("Bold"),
+        isActive: editor?.isActive("bold"),
         onClick: () => editor?.chain().focus().toggleBold().run(),
       },
       {
         label: "Italic",
         icon: ItalicIcon,
-        isActive: editor?.isActive("Italic"),
+        isActive: editor?.isActive("italic"),
 
         onClick: () => editor?.chain().focus().toggleItalic().run(),
       },
       {
         label: "UnderLine",
         icon: UnderlineIcon,
-        isActive: editor?.isActive("UnderLine"),
+        isActive: editor?.isActive("underline"),
 
         onClick: () => editor?.chain().focus().toggleUnderline().run(),
       },
     ],
-  [
-    {
-      label: "comment",
-      icon: MessageSquarePlusIcon,
-      onClick:() =>console.log ("TODO:Comment"),
-      isActive: false, //TODO:Enable this functionality
-    },
-    {
-      label:"List Todo",
-      icon: ListTodoIcon,
-      onClick: () =>editor?.chain().focus().toggleTaskList().run(),
-      isActive: editor?.isActive("taskList"),
-    },
-    {
-      label:"Remove Formatting",
-      icon: RemoveFormattingIcon,
-      onClick: () =>editor?.chain().focus().unsetAllMarks().run(),
-      isActive: editor?.isActive("Remove Formatting"),
-    }
-  ]
+    [
+      {
+        label: "comment",
+        icon: MessageSquarePlusIcon,
+        onClick: () => console.log("TODO:Comment"),
+        isActive: false, //TODO:Enable this functionality
+      },
+      {
+        label: "List Todo",
+        icon: ListTodoIcon,
+        onClick: () => editor?.chain().focus().toggleTaskList().run(),
+        isActive: editor?.isActive("taskList"),
+      },
+      {
+        label: "Remove Formatting",
+        icon: RemoveFormattingIcon,
+        onClick: () => editor?.chain().focus().unsetAllMarks().run(),
+        isActive: editor?.isActive("Remove Formatting"),
+      },
+    ],
   ];
 
   return (
@@ -131,21 +149,19 @@ export const Toolbar = () => {
       {/*TODO: font family*/}
       <Separator orientation="vertical" className="min-h-6 bg-neutral-300" />
       {/*TOOD:heading*/}
-      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
-      {sections[1].map((item)  => (
-        <ToolbarButton key={item.label} {...item}/>
-       ))}
+      <Separator orientation="vertical" className="min-h-6 bg-neutral-300" />
+
+      {sections[1].map((item) => (
+        <ToolbarButton key={item.label} {...item} />
+      ))}
       {/*TODO:font size*/}
-      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+      <Separator orientation="vertical" className="min-h-6 bg-neutral-300" />
       {/*TODO :Link*/}
       {/*TODO :Image*/}
       {/*TODO :Align*/}
       {/*TODO :Line height*/}
       {/*TODO :List*/}
-      {sections[2].map((item)  => (
-        <ToolbarButton key={item.label} {...item}/>
-      ))}
-      {sections[1].map((item) => (
+      {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
       {/*TODO: Text color*/}
