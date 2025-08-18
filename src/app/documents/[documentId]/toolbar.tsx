@@ -1,9 +1,21 @@
 "use client";
 
-import {BoldIcon, LucideIcon,PrinterIcon, Redo2Icon, SpellCheckIcon, Undo2Icon } from "lucide-react";
+import {
+  BoldIcon,
+  ItalicIcon,
+  ListTodoIcon,
+  LucideIcon,
+  MessageSquarePlusIcon,
+  PrinterIcon,
+  Redo2Icon,
+  RemoveFormattingIcon,
+  SpellCheckIcon,
+  UnderlineIcon,
+  Undo2Icon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import {useEditorStore} from "@/store/use-editor-store";
-import {Separator} from "@/components/ui/seprator";
+import { Separator } from "@/components/ui/separator";
+import { useEditorStore } from "@/app/store/use-editor-store";
 
 interface ToolbarButtonProps {
   onClick?: () => void;
@@ -28,7 +40,9 @@ export const ToolbarButton = ({
     </button>
   );
 };
+
 export const Toolbar = () => {
+  const { editor } = useEditorStore();
   const sections: {
     label: string;
     icon: LucideIcon;
@@ -41,63 +55,102 @@ export const Toolbar = () => {
         icon: Undo2Icon,
         onClick: () => console.log("undo clicked"),
       },
-      {label:"Redo",
+      {
+        label: "Redo",
         icon: Redo2Icon,
-        onClick: () =>editor?.chain().focus().redo().run(),
+        onClick: () => editor?.chain().focus().redo().run(),
       },
       {
         label: "print",
         icon: PrinterIcon,
-        onClick:() => window.print(),
-          
+        onClick: () => window.print(),
+      },
+      {
+        label: "spell Check",
+        icon: SpellCheckIcon,
+        onClick: () => {
+          const current = editor?.view.dom.getAttribute("spellcheck");
+          editor?.view.dom.setAttribute(
+            "spellcheck",
+            current === "false" ? "true" : "false"
+          );
         },
-        {
-          label:"spell Check",
-          icon: SpellCheckIcon,
-          onClick: ()=>{
-            const current= editor?.view.dom.getAttribute("spellcheck");
-            editor?.view.dom.setAttribute("spellcheck", current === "false"? "true":"false")
-
-          },
-
-        }
+      },
     ],
     [
       {
-        label:"Bold",
-        icon:BoldIcon,
-        onClick:() =>editor?.chain().focus().toggleBold().run(),
-      }
+        label: "Bold",
+        icon: BoldIcon,
+        isActive: editor?.isActive("Bold"),
+        onClick: () => editor?.chain().focus().toggleBold().run(),
+      },
+      {
+        label: "Italic",
+        icon: ItalicIcon,
+        isActive: editor?.isActive("Italic"),
 
-    ]
+        onClick: () => editor?.chain().focus().toggleItalic().run(),
+      },
+      {
+        label: "UnderLine",
+        icon: UnderlineIcon,
+        isActive: editor?.isActive("UnderLine"),
+
+        onClick: () => editor?.chain().focus().toggleUnderline().run(),
+      },
+    ],
+  [
+    {
+      label: "comment",
+      icon: MessageSquarePlusIcon,
+      onClick:() =>console.log ("TODO:Comment"),
+      isActive: false, //TODO:Enable this functionality
+    },
+    {
+      label:"List Todo",
+      icon: ListTodoIcon,
+      onClick: () =>editor?.chain().focus().toggleTaskList().run(),
+      isActive: editor?.isActive("taskList"),
+    },
+    {
+      label:"Remove Formatting",
+      icon: RemoveFormattingIcon,
+      onClick: () =>editor?.chain().focus().unsetAllMarks().run(),
+      isActive: editor?.isActive("Remove Formatting"),
+    }
+  ]
   ];
 
-      
-
-      
-  {  
-  
   return (
     <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-[24px] min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
-           {sections[0].map((item) => (
-            <ToolbarButton key={item.label} {...item} />
-
-           ))}
-           <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
+      {sections[0].map((item) => (
+        <ToolbarButton key={item.label} {...item} />
+      ))}
+      <Separator orientation="vertical" className="min-h-6 bg-neutral-300" />
 
       {/*TODO: font family*/}
-      <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
-       {/*TOOD:heading*/}
-      <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
-       {/*TODO:font size*/}
-       <span>TODO:font Size</span>
-       <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
-       {sections[1].map((item) => (
+      <Separator orientation="vertical" className="min-h-6 bg-neutral-300" />
+      {/*TOOD:heading*/}
+      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+      {sections[1].map((item)  => (
         <ToolbarButton key={item.label} {...item}/>
        ))}
-           
-           </div>
-   
-          );
+      {/*TODO:font size*/}
+      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+      {/*TODO :Link*/}
+      {/*TODO :Image*/}
+      {/*TODO :Align*/}
+      {/*TODO :Line height*/}
+      {/*TODO :List*/}
+      {sections[2].map((item)  => (
+        <ToolbarButton key={item.label} {...item}/>
+      ))}
+      {sections[1].map((item) => (
+        <ToolbarButton key={item.label} {...item} />
+      ))}
+      {/*TODO: Text color*/}
+      {/*TODO: Highlight color*/}
+      {/*TODO: Highlight color*/}
+    </div>
+  );
 };
-
