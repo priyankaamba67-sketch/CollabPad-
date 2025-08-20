@@ -1,5 +1,5 @@
 "use client";
-import { TaskItem, TaskList } from '@tiptap/extension-list'
+import { TaskItem, TaskList, BulletList } from '@tiptap/extension-list'
 import { TableKit } from "@tiptap/extension-table";
 import { Image } from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
@@ -28,6 +28,7 @@ export const Editor = () => {
       }),
       TaskList,
       TaskItem.configure({ nested: true }),
+      BulletList,
     ],
     content: `
         <table>
