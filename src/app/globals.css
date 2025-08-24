@@ -120,7 +120,24 @@
     @apply bg-background text-foreground;
   }
 }
+
 .tiptap {
+
+
+/* Link styles */
+  a {
+    @apply text-blue-600;
+    cursor: pointer;
+
+    &:hover {
+      @apply underline;
+    }
+  }
+
+
+
+
+
   /* heading styles*/
   h1,
   h2,

@@ -2,11 +2,13 @@
 import { TaskItem, TaskList, BulletList } from '@tiptap/extension-list'
 import { TableKit } from "@tiptap/extension-table";
 import { Image } from "@tiptap/extension-image";
+import {Link} from '@tiptap/extension-link'
+import {TextAlign} from '@tiptap/extension-text-align'
 import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
 import { FontFamily } from "@tiptap/extension-text-style";
 import React from 'react'
-import Underline from "@tiptap/extension-underline";
+import Underline from "@tiptap/extension-underline"; 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
@@ -25,12 +27,21 @@ export const Editor = () => {
 
     extensions: [
       StarterKit,
+      TextAlign.configure({
+        types:['heading','paragraph']
+      }),
+      Link.configure({
+        openOnClick: false,
+        autolink:true,
+        defaultProtocol:"https"
+      }),
       Underline,
       Color,
       Highlight. configure ({
         multicolor: true,
       }),
       Image,
+      
       FontFamily,
       TableKit.configure({
         table: { resizable: true },
