@@ -51,7 +51,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import TextAlign from "@tiptap/extension-text-align";
+import {TextAlign} from "@tiptap/extension-text-align";
 import { useSearchParams } from "next/navigation";
 import { parse } from "path";
 import { Value } from "@radix-ui/react-select";
@@ -63,7 +63,7 @@ const LineHeightButton = () => {
     {label:"single",value:"1"},
      {label:"1.15",value:"1.15"},
       {label:"1.5",value:"1.5"},
-       {label:"double",value:"2"},
+       {label:"Double",value:"2"},
   ];
    
   return (
@@ -81,7 +81,7 @@ const LineHeightButton = () => {
             onClick={() => editor?.chain().focus().setLineHeight(value).run()}
             className={cn(
               "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80",
-              editor?.getAttributes("paragraph").LineHeight === value && "bg-neutral-200/80"
+              editor?.getAttributes("paragraph").lineHeight === value && "bg-neutral-200/80"
             )}
           >
             
@@ -92,6 +92,9 @@ const LineHeightButton = () => {
     </DropdownMenu>
   );
 };
+
+
+
 
 const FontSizeButton = () => {
   const { editor } = useEditorStore();

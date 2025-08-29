@@ -1,6 +1,5 @@
-import { LineHeight } from "@tiptap/extension-text-style";
 import { Extension } from "@tiptap/react";
-import { Locale, th, tr } from "date-fns/locale";
+
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     lineHeight: {
@@ -22,12 +21,12 @@ export const LineHeightExtension = Extension.create({
       {
         types: this.options.types,
         attributes: {
-          LineHeight: {
+          lineHeight: {
             default: this.options.defaultLineHeight,
             renderHTML: (attributes) => {
               if (!attributes.lineHeight) return {};
               return {
-                style: "line-height: ${attributes.lineHeight}",
+                style: `line-height: ${attributes.lineHeight}`,
               };
             },
             parseHTML: (element) => {
@@ -40,7 +39,7 @@ export const LineHeightExtension = Extension.create({
   },
   addCommands(){
     return{
-        setLineHeight:(LineHeight:string) =>({tr,state,dispatch})=>{
+        setLineHeight:(lineHeight:string) =>({tr,state,dispatch})=>{
             const{selection} =state;
             tr=tr.setSelection(selection);
          
@@ -49,7 +48,7 @@ export const LineHeightExtension = Extension.create({
             if(this.options.types.includes(node.type.name)){
                 tr = tr.setNodeMarkup(pos,undefined,{
                   ...node.attrs,
-                  LineHeight,  
+                  lineHeight,  
                 })
             }
           })
@@ -66,7 +65,7 @@ export const LineHeightExtension = Extension.create({
                 if(this.options.types.includes(node.type.name)){
                     tr= tr.setNodeMarkup(pos,undefined,{
                         ...node.attrs,
-                        LineHeight: this.options.defaultLineHeight
+                        lineHeight: this.options.defaultLineHeight
                     })
                 }
             })
