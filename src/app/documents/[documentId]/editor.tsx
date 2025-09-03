@@ -4,7 +4,7 @@ import { TableKit } from "@tiptap/extension-table";
 import { Image } from "@tiptap/extension-image";
 import { Link } from "@tiptap/extension-link";
 import { TextAlign } from "@tiptap/extension-text-align";
-import { FontSize } from '@tiptap/extension-text-style'
+import { FontSize } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Highlight } from "@tiptap/extension-highlight";
 import { FontFamily, TextStyle } from "@tiptap/extension-text-style";
@@ -32,12 +32,12 @@ export const Editor = () => {
     extensions: [
       StarterKit,
       LineHeightExtension.configure({
-        types:["heading","paragraph"],
-        defaultLineHeight:"normal"
+        types: ["heading", "paragraph"],
+        defaultLineHeight: "normal",
       }),
       FontSizeExtension,
       TextAlign.configure({
-        types: ["heading", "paragraph"],  
+        types: ["heading", "paragraph"],
       }),
 
       Link.configure({
@@ -60,22 +60,7 @@ export const Editor = () => {
       TaskItem.configure({ nested: true }),
       BulletList,
     ],
-    content: `
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th colspan="3">Description</th>
-            </tr>
-            <tr>
-              <td>Cyndi Lauper</td>
-              <td>Singer</td>
-              <td>Songwriter</td>
-              <td>Actress</td>
-            </tr>
-          </tbody>
-        </table>
-      `,
+    content: ``,
     immediatelyRender: false,
   });
 
