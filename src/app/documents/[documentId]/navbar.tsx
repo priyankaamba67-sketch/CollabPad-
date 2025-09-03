@@ -16,6 +16,7 @@ import {
   Redo2Icon,
   RemoveFormatting,
   RemoveFormattingIcon,
+  Rows,
   StrikethroughIcon,
   TextIcon,
   TrashIcon,
@@ -31,13 +32,55 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarSub,
+  MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { DocumentInput } from "./document-input";
-import { MenubarSubContent } from "@radix-ui/react-menubar";
+import { useEditor, useEditorState } from "@tiptap/react";
+import { useEditorStore } from "@/app/store/use-editor-store";
 
 export const Navbar = () => {
+  const { editor } = useEditorStore();
+  const InsertTable = ({ rows, cols }: { rows: number; cols: number }) => {
+    editor
+      ?.chain()
+      .focus()
+      .insertTable({ rows, cols, withHeaderRow: false })
+      .run();
+  };
+  const onDownload = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+  };
+  const onSaveJson = () => {
+    if (!editor) return;
+    const content = editor.getJSON();
+    const blob = new Blob([JSON.stringify(content)], {
+      type: "application/json",
+    });
+    onDownload(blob, "document.json"); //Todo: Use document name
+  };
+  const onSaveHTML = () => {
+    if (!editor) return;
+    const content = editor.getHTML();
+    const blob = new Blob([content], {
+      type: "text/html",
+    });
+    onDownload(blob, "document.html"); //Todo: Use document name
+  };
+  const onSaveText = () => {
+    if (!editor) return;
+    const content = editor.getText();
+    const blob = new Blob([content], {
+      type: "text/plain",
+    });
+    onDownload(blob, "document."); //Todo: Use document name
+  };
+
   return (
     <nav className="flex items-center  justify-between bg-blue-100">
       <div className="flex gap-2 items-center">
@@ -46,139 +89,104 @@ export const Navbar = () => {
         </Link>
         <div className="flex flex-col">
           <DocumentInput />
-          <div className="flex ">
-            <Menubar className=" border-none bg-transparent shadow-none h-auto p-0">
+          <div className="flex">
+            <Menubar className="border-none bg-transparent shadow-none h-auto p-0">
               <MenubarMenu>
-                <MenubarTrigger   className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   File
-                  <MenubarContent className="print:hidden">
-                    <MenubarSub>
-                      <MenubarSubTrigger>
-                        <FileIcon className="size-4 mr-2" />
-                        Save
-                      </MenubarSubTrigger>
-                      <MenubarContent>
-                        <MenubarItem>
-                        <MenubarMenu>
-                          <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
-                            Edit
-                          </MenubarTrigger>
-                          <MenubarContent>
-                            <MenubarItem>
-                              <Undo2Icon className="size-4 mr-2"/>
-                                Undo <MenubarShortcut>xz</MenubarShortcut>
-                              
-                              </MenubarItem>
-                              <MenubarItem>
-                              <Redo2Icon className="size-4 mr-2"/>
-                                Redo <MenubarShortcut>xy</MenubarShortcut>
-                              
-                              </MenubarItem>
-                          </MenubarContent>
-                        </MenubarMenu>
+                </MenubarTrigger>
+                <MenubarContent className="print:hidden">
+                  <MenubarSub>
+                    <MenubarSubTrigger>
 
-                        
-                          <FileJsonIcon className="size-4 mr-2" />
-                          JSON
-                        </MenubarItem>
-                        <MenubarItem>
-                          <GlobeIcon className="size-4 mr-2" />
-                          HTML
-                        </MenubarItem>
-                        <MenubarItem>
-                          <BsFilePdf className="size-4 mr-2" />
-                          PDF
-                        </MenubarItem>
-                        <MenubarItem>
-                          <FileTextIcon className="size-4 mr-2" />
-                          TEXT
-                        </MenubarItem>
-                      </MenubarContent>
-                    </MenubarSub>
-                    <MenubarItem>
-                      <FilePlusIcon className="size-4 mr-2" />
-                      New Document
-                    </MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>
-                      <MenubarSeparator className="size-4 mr-2" />
-                      New Document
-                    </MenubarItem>
-                    <MenubarItem>
-                      <FilePenIcon className="size-4 mr-2" />
-                      Rename
-                    </MenubarItem>
-                    <MenubarItem>
-                      <TrashIcon className="size-4 mr-2" />
-                      Remove
-                    </MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem onClick={() => window.print()}>
-                      <PrinterIcon className="size-4 mr-2" />
-                      Print <MenubarShortcut>XP</MenubarShortcut>
-                    </MenubarItem>
-                  </MenubarContent>
+                                                                      
+                  <FileIcon className="size-4 mr-2" />
+                    Save
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem onClick={onSaveJson}>
+                        <FileJsonIcon className="size-4 mr-2"/>
+                        JSON
+                      </MenubarItem>
+                       <MenubarItem onClick={onSaveHTML}>
+                        <GlobeIcon className="size-4 mr-2"/>
+                        HTML
+                      </MenubarItem>
+                       <MenubarItem  onClick={() => window.print()}>
+                        <BsFilePdf className="size-4 mr-2"/>
+                        PDF
+                      </MenubarItem>
+                       <MenubarItem onClick={onSaveText}>
+                        <FileTextIcon className="size-4 mr-2"/>
+                        Text
+                      </MenubarItem>
+
+
+                    </MenubarSubContent>
+                  </MenubarSub>
+                  <MenubarItem>
+                    <FilePlusIcon className="size-4 mr-2"/>
+                    New Document
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>
+                    <FilePenIcon className="size-4 mr-2"/> 
+                    Rename
+                  </MenubarItem>
+                  <MenubarItem>
+                    <TrashIcon className="size-4 mr-2"/> 
+                    Remove
+                  </MenubarItem>
+                  <MenubarSeparator/>
+                  <MenubarItem  onClick={()=> window.print()}>
+                    <PrinterIcon className="size-4 mr-2"/> 
+                    Print <MenubarShortcut>XP</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
+                  Edit
                 </MenubarTrigger>
               </MenubarMenu>
               <MenubarMenu>
-                <MenubarTrigger className="text-sm font-normal py-0 px-[7px] rounded-sm hover:bg-muted h-auto">
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Insert
                 </MenubarTrigger>
                 <MenubarContent>
                   <MenubarSub>
                     <MenubarSubTrigger>Table</MenubarSubTrigger>
                     <MenubarSubContent>
-                      <MenubarItem>
-                        1 x 1
+                      <MenubarItem onClick={()=> InsertTable({rows: 1, cols:1 })}>
+                        1 X 1
                       </MenubarItem>
-                      <MenubarItem>
-                        2 x 2
-                        <MenubarItem>
-                          3 x 3
-                        </MenubarItem>
-                        <MenubarItem>
-                          4 x 4
-                        </MenubarItem>
+                      <MenubarItem onClick={()=> InsertTable({rows: 2, cols:2 })}>
+                        
+                        2 X 2
                       </MenubarItem>
+                      <MenubarItem onClick={()=> InsertTable({rows: 3, cols:3 })}>
+                        
+                        3 X 3
+                      </MenubarItem>
+                      <MenubarItem  onClick={()=> InsertTable({rows: 4, cols:4 })}>
+                        
+                        4 x 4
+                      </MenubarItem>
+
                     </MenubarSubContent>
                   </MenubarSub>
                 </MenubarContent>
               </MenubarMenu>
               <MenubarMenu>
-                <MenubarTrigger className="text-sm font-normal py-0 px-[7px] rounded-sm hover:bg-muted h-auto">
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Format
                 </MenubarTrigger>
                 <MenubarContent>
                   <MenubarSub>
                     <MenubarSubTrigger>
-                      <TextIcon className="size-4 mr-2"/>
+                      <TextIcon  className="size-4 mr-2"/>
                       Text
                     </MenubarSubTrigger>
-                    <MenubarSubContent>
-                      <MenubarItem>
-                        <BoldIcon className="size-4 mr-2"/>
-                        Bold <MenubarShortcut>xB</MenubarShortcut>
-                      </MenubarItem>
-                       <MenubarItem>
-                        <ItalicIcon className="size-4 mr-2"/>
-                        Italic <MenubarShortcut>xI</MenubarShortcut>
-                      </MenubarItem>
-                       <MenubarItem>
-                        <UnderlineIcon className="size-4 mr-2"/>
-                        Underline <MenubarShortcut>xU</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarItem>
-                        <StrikethroughIcon   className="size-4 mr-2"/>
-                        <span>Strikethrough&nbsp;&nbsp; </span><MenubarShortcut>xS</MenubarShortcut>
-                      </MenubarItem>
-
-                    </MenubarSubContent>
-                  </MenubarSub>
-                  <MenubarSub>
-                    <MenubarItem>
-                     <RemoveFormattingIcon className="size-4 mr-2"/>
-                     Clear formatting 
-                    </MenubarItem>
                   </MenubarSub>
                 </MenubarContent>
               </MenubarMenu>
