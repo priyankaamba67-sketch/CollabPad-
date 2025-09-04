@@ -15,6 +15,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 
 
 export const metadata: Metadata = {
@@ -47,7 +48,12 @@ export default function RootLayout({
             </SignedIn> */}
           </header>
           <NuqsAdapter>
+            <ConvexClientProvider>
+
+           
           {children}
+          
+           </ConvexClientProvider>
           </NuqsAdapter>
         </body>
       </html>
