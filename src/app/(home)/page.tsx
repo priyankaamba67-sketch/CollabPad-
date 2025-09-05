@@ -4,12 +4,31 @@
 import Link from "next/link";
 import { Navbar } from "./navbar";
 import { TemplatesGallery } from "./templates-gallery";
-import { useQuery } from "convex/react";
+import { usePaginatedQuery } from "convex/react";
 
 import { api } from "../../../convex/_generated/api";
+import { useState } from "react";
+import { title } from "process";
+import { create } from "domain";
+
 const Home = () => {
-  const documents = useQuery(api.documents.get);
-  if (documents===undefined){
+  const documents = usePaginatedQuery(api.documents.get,{},{initialNumItems:5});
+  const [isCreating,setCreating] = useState(false);
+
+  const OnTemplateClick =(title:string,initialContent:string)=> {
+    setIsCreating(true);
+    create({title,initialContent})
+    .then((documentId)=>{
+      router.push(`/documents/${documentId}`);
+
+    })
+    .finally(()=>{
+      setIsCreating(false);
+
+    });
+
+  };
+  if (documents===undefined) {
     return(
       <p>Loading...</p>
     )
@@ -23,7 +42,7 @@ const Home = () => {
       <div className="mt-16">
         <TemplatesGallery />
         {documents?.map((document)=>(
-          <span>{document.title}</span>
+          <span key={document._id}>{document.title}</span>
 
 
         

@@ -8,8 +8,13 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { templates } from "@/constants/templates";
+import { useRouter } from "next/router";
+import { useMutation } from "convex/react";
+import {api} from"../../../convex/_generated/api";
 
 export const TemplatesGallery = () => {
+  const router =useRouter();
+  const create = useMutation(api)
   const isCreating = false;
   return (
     <div className="bg-[#F1F3F4]">
@@ -51,6 +56,7 @@ export const TemplatesGallery = () => {
           <CarouselPrevious/>
           <CarouselNext/>
         </Carousel>
+        
       </div>
     </div>
   );
