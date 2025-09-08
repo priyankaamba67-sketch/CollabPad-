@@ -10,7 +10,7 @@ import { Value } from "@radix-ui/react-select";
 
 export const SearchInput = () => {
   const [search, setSearch] = useSearchParam();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(search);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
