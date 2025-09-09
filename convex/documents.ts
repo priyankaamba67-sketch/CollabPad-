@@ -14,7 +14,7 @@ export const create = mutation({
     if (!user) {
       throw new ConvexError("Unathorized");
     }
-    return await await ctx.db.insert("documents", {
+    return await ctx.db.insert("documents", {
       title: args.title ?? "untitled count",
       ownerId: user.subject,
       initialContent: args.initialContent,
@@ -26,12 +26,16 @@ export const get = query({
     paginationOpts: paginationOptsValidator,
     search: v.optional(v.string()),
   },
+
   handler: async (ctx, { search, paginationOpts }) => {
     const user = await ctx.auth.getUserIdentity();
 
     if (!user) {
       throw new ConvexError("Unauthorized");
     }
+
+    console.log({ user });
+
     if (search) {
       return await ctx.db
         .query("documents")

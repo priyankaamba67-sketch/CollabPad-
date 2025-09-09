@@ -15,14 +15,12 @@ import { useSearchParam } from "@/hooks/use-search-param";
 import { Search } from "lucide-react";
 
 const Home = () => {
-  const {
-    results,
-    status,
-    loadMore
-  
-} = usePaginatedQuery(api.documents.get,{},{initialNumItems:5});
-  const [isCreating,setCreating] = useState(false);
-
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.documents.get,
+    {},
+    { initialNumItems: 5 }
+  );
+  const [isCreating, setCreating] = useState(false);
 
   return (
     <div className="min-h-screen flex-col">
@@ -32,14 +30,13 @@ const Home = () => {
       <div className="mt-16">
         <TemplatesGallery />
         <DocumentsTabel
-        documents={results}
-        loadMore={loadMore}
-        status={status}
-        
-      />
+          documents={results}
+          loadMore={loadMore}
+          status={status}
+        />
       </div>
     </div>
   );
-}
+};
 
 export default Home;
