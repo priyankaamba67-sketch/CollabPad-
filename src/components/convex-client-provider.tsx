@@ -7,12 +7,6 @@ import {
   Unauthenticated,
   AuthLoading,
 } from "convex/react";
-import {
-  ConvexReactClient,
-  Authenticated,
-  Unauthenticated,
-  AuthLoading,
-} from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import {
   useAuth,
