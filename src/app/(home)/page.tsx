@@ -5,34 +5,22 @@ import Link from "next/link";
 import { Navbar } from "./navbar";
 import { TemplatesGallery } from "./templates-gallery";
 import { usePaginatedQuery } from "convex/react";
+import { DocumentsTabel } from "./documents-table";
 
 import { api } from "../../../convex/_generated/api";
 import { useState } from "react";
 import { title } from "process";
 import { create } from "domain";
+import { useSearchParam } from "@/hooks/use-search-param";
+import { Search } from "lucide-react";
 
 const Home = () => {
-  const documents = usePaginatedQuery(api.documents.get,{},{initialNumItems:5});
-  const [isCreating,setCreating] = useState(false);
-
-  const OnTemplateClick =(title:string,initialContent:string)=> {
-    setIsCreating(true);
-    create({title,initialContent})
-    .then((documentId)=>{
-      router.push(`/documents/${documentId}`);
-
-    })
-    .finally(()=>{
-      setIsCreating(false);
-
-    });
-
-  };
-  if (documents===undefined) {
-    return(
-      <p>Loading...</p>
-    )
-  }
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.documents.get,
+    {},
+    { initialNumItems: 5 }
+  );
+  const [isCreating, setCreating] = useState(false);
 
   return (
     <div className="min-h-screen flex-col">
@@ -41,12 +29,11 @@ const Home = () => {
       </div>
       <div className="mt-16">
         <TemplatesGallery />
-        {documents?.map((document)=>(
-          <span key={document._id}>{document.title}</span>
-
-
-        
-       ) )}
+        <DocumentsTabel
+          documents={results}
+          loadMore={loadMore}
+          status={status}
+        />
       </div>
     </div>
   );

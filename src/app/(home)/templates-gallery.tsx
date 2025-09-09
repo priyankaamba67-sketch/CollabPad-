@@ -13,9 +13,13 @@ import { useMutation } from "convex/react";
 import {api} from"../../../convex/_generated/api";
 
 export const TemplatesGallery = () => {
-  const router =useRouter();
-  const create = useMutation(api)
+  // const router =useRouter();
+  // const create = useMutation(api)
   const isCreating = false;
+  function onTemplateClick(label: string, arg1: string): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="bg-[#F1F3F4]">
       <div className="max-w-screen-xl mx-auto px-16 py-6 flex flex-col gap-y-4 ">
@@ -36,7 +40,8 @@ export const TemplatesGallery = () => {
                 >
                   <button
                     disabled={isCreating}
-                    onClick={() => {}}
+                    //TODO: Add proper intial content
+                    onClick={() => onTemplateClick (template.label,"")}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,
                       backgroundSize: "cover",
