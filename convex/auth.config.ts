@@ -1,10 +1,12 @@
-import { Domain } from "domain";
+// convex/auth.config.ts
 
-export default{
-    providers: [
-        {
-            Domain:"https//equipped-kid-12.clrek.accounts.dev",
-            applicationId:"convex",
-        }
-    ]
-}
+const authConfig = {
+  providers: [
+    {
+      domain: "https://pleasing-cattle-19.clerk.accounts.dev",
+      applicationID: "convex", // 👈 capital I, capital D
+    },
+  ],
+};
+
+export default authConfig;
