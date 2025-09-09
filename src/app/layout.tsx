@@ -24,7 +24,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // <ClerkProvider>
+    <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
           <header className="flex justify-end items-center p-4 gap-4 h-16">
@@ -47,6 +47,6 @@ export default function RootLayout({
           </NuqsAdapter>
         </body>
       </html>
-    // </ClerkProvider>
+    </ClerkProvider>
   );
 }
