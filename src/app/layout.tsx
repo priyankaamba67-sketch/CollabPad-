@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
-import { Inter,  } from "next/font/google";
-import {NuqsAdapter} from"nuqs/adapters/next/app";
-
+import { Inter } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 
-const inter =   Inter({
-  subsets:["latin"],
-})
 import {
   ClerkProvider,
   SignInButton,
@@ -17,6 +13,7 @@ import {
 } from "@clerk/nextjs";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,17 +22,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={inter.className}
-        >
+        <body className={inter.className}>
           <header className="flex justify-end items-center p-4 gap-4 h-16">
-            {/* <SignedOut>
+            <SignedOut>
               <SignInButton />
               <SignUpButton>
                 <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
@@ -45,15 +38,11 @@ export default function RootLayout({
             </SignedOut>
             <SignedIn>
               <UserButton />
-            </SignedIn> */}
+            </SignedIn>
           </header>
-          <NuqsAdapter>
-            <ConvexClientProvider>
 
-           
-          {children}
-          
-           </ConvexClientProvider>
+          <NuqsAdapter>
+            <ConvexClientProvider>{children}</ConvexClientProvider>
           </NuqsAdapter>
         </body>
       </html>

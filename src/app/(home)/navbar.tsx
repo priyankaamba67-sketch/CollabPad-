@@ -14,7 +14,7 @@ export const Navbar = () => {
                  <h3 className="text-xl">Docs</h3>
             </div>
             <SearchInput />
-            <UserButton/>
+            <UserButton afterSwitchSessionUrl="/"/>
         </nav>
     );
 };
