@@ -21,9 +21,9 @@ const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
   return (
     <>
-      <ClerkLoading>
+      {/* <ClerkLoading>
         <FullscreenLoader label="auth loading..." />
-      </ClerkLoading>
+      </ClerkLoading> */}
 
       <ClerkLoaded>
         <ConvexProviderWithClerk useAuth={useAuth} client={convex}>
@@ -39,9 +39,9 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
             </div>
           </Unauthenticated>
 
-          <AuthLoading>
+          {/* <AuthLoading>
             <FullscreenLoader label="auth loading..." />
-          </AuthLoading>
+          </AuthLoading> */}
         </ConvexProviderWithClerk>
       </ClerkLoaded>
     </>

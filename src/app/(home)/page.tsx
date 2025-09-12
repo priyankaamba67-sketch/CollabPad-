@@ -15,7 +15,12 @@ import { useSearchParam } from "@/hooks/use-search-param";
 import { Search } from "lucide-react";
 
 const Home = () => {
-  const { results, status, loadMore } = usePaginatedQuery(
+  const[search] =useSearchParam();
+  const { 
+    results,
+     status,
+      loadMore
+     } = usePaginatedQuery(
     api.documents.get,
     {},
     { initialNumItems: 5 }

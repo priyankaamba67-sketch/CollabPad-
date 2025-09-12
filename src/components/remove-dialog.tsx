@@ -19,7 +19,8 @@ import { api } from "../../convex/_generated/api";
 interface RemoveDialogProps {
   documentId: Id<"documents">;
   children: React.ReactNode;
-}
+};
+
 export const RemoveDialog = ({ documentId, children }: RemoveDialogProps) => {
   const remove = useMutation(api.documents.removeById);
   const [isRemoving, setIsRemoving] = useState(false);

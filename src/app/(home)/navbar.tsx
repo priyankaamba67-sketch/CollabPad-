@@ -14,7 +14,16 @@ export const Navbar = () => {
                  <h3 className="text-xl">Docs</h3>
             </div>
             <SearchInput />
-            <UserButton afterSwitchSessionUrl="/"/>
+            <div className="flex gao-3 items-center">
+                <OrganizationSwitcher
+                afterCreateOrganizationUrl="/"
+                afterLeaveOrganizationUrl="/"
+                afterSelectOrganizationUrl="/"
+                afterSelectPersonalUrl="/"
+                />
+
+            </div>
+            <UserButton/>
         </nav>
     );
 };

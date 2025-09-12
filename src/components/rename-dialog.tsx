@@ -44,8 +44,8 @@ update({id:documentId,title:title.trim()||"untitled"})
       <AlertDialogTrigger asChild>
           {children}
       </AlertDialogTrigger>
-      <AlertDialogContent>
-        <form>
+      <AlertDialogContent onClick={(e)=>e.stopPropagation()}>
+        <form onSubmit={onSubmit}>
           <AlertDialogHeader>
             <AlertDialogTitle>Rename document</AlertDialogTitle>
             <AlertDialogDescription>
@@ -53,7 +53,12 @@ update({id:documentId,title:title.trim()||"untitled"})
             </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="my-4">
-           <Input/>
+           <Input
+           value={title}
+           onChange={(e)=>setTitle(e.target.value)}
+           placeholder="Document name"
+           onClick={(e)=>e.stopPropagation}
+           />
             </div>
             <AlertDialogFooter>
               <Button>

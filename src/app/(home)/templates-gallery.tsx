@@ -8,17 +8,27 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { templates } from "@/constants/templates";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
-import {api} from"../../../convex/_generated/api";
+
+import { api } from "../../../convex/_generated/api";
+import { useState } from "react";
 
 export const TemplatesGallery = () => {
-  // const router =useRouter();
-  // const create = useMutation(api)
-  const isCreating = false;
-  function onTemplateClick(label: string, arg1: string): void {
-    throw new Error("Function not implemented.");
-  }
+  const router = useRouter();
+  const create = useMutation(api.documents.create);
+  const [isCreating, setCreating] = useState(false);
+
+  const onTemplateClick = (title: string, initialContent: string) => {
+    setCreating(true);
+    create({ title, initialContent })
+      .then((documentId) => {
+        router.push(`/documents/${documentId}`);
+      })
+      .finally(() => {
+        setCreating(false);
+      });
+  };
 
   return (
     <div className="bg-[#F1F3F4]">
@@ -41,7 +51,7 @@ export const TemplatesGallery = () => {
                   <button
                     disabled={isCreating}
                     //TODO: Add proper intial content
-                    onClick={() => onTemplateClick (template.label,"")}
+                    onClick={() => onTemplateClick(template.label, "")}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,
                       backgroundSize: "cover",
@@ -58,10 +68,9 @@ export const TemplatesGallery = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious/>
-          <CarouselNext/>
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
-        
       </div>
     </div>
   );

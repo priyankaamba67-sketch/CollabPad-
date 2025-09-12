@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 import { Doc } from "../../../convex/_generated/dataModel";
 import { DocumentMenu } from "./document-menu";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface DocumentRowProps {
   document: Doc<"documents">;
@@ -14,13 +14,11 @@ interface DocumentRowProps {
 export const DocumentRow = ({ document }: DocumentRowProps) => {
   const router = useRouter();
 
-  const onNewTabClick = (id: string) => {
-    window.open(`/documents/${id}`, "_blank");
-  };
+  
 
   return (
     <TableRow
-      onClick={() => router.push(`/document/${document._id}`)}
+      onClick={() => router.push(`/documents/${document._id}`)}
       className="cursor-pointer"
     >
       <TableCell className="w-[50px]">
@@ -28,6 +26,7 @@ export const DocumentRow = ({ document }: DocumentRowProps) => {
       </TableCell>
       <TableCell className="front-medium md:w-[45%]">
         {document.title}
+        </TableCell>
         <TableCell className="text-muted-foreground hidden md:flex items-center gap-2">
           {document.organizationId ? (
             <Building2Icon className="size-4" />
@@ -43,10 +42,9 @@ export const DocumentRow = ({ document }: DocumentRowProps) => {
           <DocumentMenu
             documentId={document._id}
             title={document.title}
-            onNewTab={() => window.open(`/document/${document._id}`, "_blank")}
+            onNewTab={() => window.open(`/documents/${document._id}`, "_blank")}
           />
         </TableCell>
-      </TableCell>
     </TableRow>
   );
 };
