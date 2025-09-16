@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BsFilePdf } from "react-icons/bs";
+import { OrganizationSwitcher,UserButton } from "@clerk/nextjs";
 import {
   BoldIcon,
   FileIcon,
@@ -194,6 +195,17 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
+      <div className="flex gap-3 items-center pl-6">
+                <OrganizationSwitcher
+                afterCreateOrganizationUrl="/"
+                afterLeaveOrganizationUrl="/"
+                afterSelectOrganizationUrl="/"
+                afterSelectPersonalUrl="/"
+                />
+
+            
+            <UserButton />
+              </div>
     </nav>
   );
 };

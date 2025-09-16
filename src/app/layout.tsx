@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner"
 
 import {
   ClerkProvider,
@@ -43,6 +44,7 @@ export default function RootLayout({
 
           <NuqsAdapter>
             <ConvexClientProvider>{children}</ConvexClientProvider>
+            <Toaster/>
             <ConvexClientProvider>{children}</ConvexClientProvider>
           </NuqsAdapter>
         </body>

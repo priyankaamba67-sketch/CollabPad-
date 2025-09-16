@@ -4,7 +4,6 @@ import { TableKit } from "@tiptap/extension-table";
 import { Image } from "@tiptap/extension-image";
 import { Link } from "@tiptap/extension-link";
 import { TextAlign } from "@tiptap/extension-text-align";
-import { FontSize } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Highlight } from "@tiptap/extension-highlight";
 import { FontFamily, TextStyle } from "@tiptap/extension-text-style";
@@ -18,8 +17,22 @@ import { useEditorStore } from "@/app/store/use-editor-store";
 import { types } from "util";
 import { FontSizeExtension } from "@/extensions/font-size";
 
+import { Collaboration } from "@tiptap/extension-collaboration";
+import CollaborationCaret from "@tiptap/extension-collaboration-caret";
+import * as Y from "yjs";
+import { LiveblocksYjsProvider } from "@liveblocks/yjs";
+import { useRoom } from "@liveblocks/react";
+
 export const Editor = () => {
   const { setEditor } = useEditorStore();
+  const room = useRoom();
+
+  const ydoc = React.useMemo(() => new Y.Doc(), []);
+  const provider = React.useMemo(
+    () => new LiveblocksYjsProvider(room, ydoc),
+    [room, ydoc]
+  );
+
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -30,7 +43,7 @@ export const Editor = () => {
     },
 
     extensions: [
-      StarterKit,
+      StarterKit.configure({ undoRedo: false }),
       LineHeightExtension.configure({
         types: ["heading", "paragraph"],
         defaultLineHeight: "normal",
@@ -59,6 +72,15 @@ export const Editor = () => {
       TaskList,
       TaskItem.configure({ nested: true }),
       BulletList,
+
+      Collaboration.configure({ document: ydoc }),
+      CollaborationCaret.configure({
+        provider,
+        user: {
+          name: "Cyndi Lauper",
+          color: "#f783ac",
+        },
+      }),
     ],
     content: ``,
     immediatelyRender: false,

@@ -602,8 +602,6 @@ export const Toolbar = () => {
         <ToolbarButton key={item.label} {...item} />
       ))}
       {/*TODO: Text color*/}
-      {/*TODO: Highlight color*/}
-      {/*TODO: Highlight color*/}
     </div>
   );
 };

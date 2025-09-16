@@ -19,6 +19,7 @@ import { Input } from "./ui/input";
 import { Id } from "../../convex/_generated/dataModel";
 import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
+import{toast} from"sonner";
 
 interface RenameDialogProps {
   documentId: Id<"documents">;
@@ -37,6 +38,13 @@ e.preventDefault();
 setIsUpdating(true);
 
 update({id:documentId,title:title.trim()||"untitled"})
+.catch(() => toast.error("Somthing went wrong"))
+.then(()=> toast.success("Document updated"))
+.finally( ()=>{
+  setIsUpdating(false);
+  setOpen(false);
+})
+
 }
 
   return (
@@ -73,3 +81,4 @@ update({id:documentId,title:title.trim()||"untitled"})
     </AlertDialog>
   );
 };
+
