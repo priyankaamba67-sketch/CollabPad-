@@ -14,6 +14,7 @@ import { LineHeightExtension } from "@/extensions/line-height";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 import { useEditorStore } from "@/app/store/use-editor-store";
+import { useStorage } from "@liveblocks/react";
 import { types } from "util";
 import { FontSizeExtension } from "@/extensions/font-size";
 
@@ -24,6 +25,8 @@ import { LiveblocksYjsProvider } from "@liveblocks/yjs";
 import { useRoom } from "@liveblocks/react";
 
 export const Editor = () => {
+  const leftMargin= useStorage((root)=>root.leftMargin);
+  const rightMargin=useStorage((root)=>root.rightMargin);
   const { setEditor } = useEditorStore();
   const room = useRoom();
 
@@ -36,7 +39,7 @@ export const Editor = () => {
   const editor = useEditor({
     editorProps: {
       attributes: {
-        style: "padding-left: 56px; padding-right: 56px;",
+        style: "padding-left:${lefrMargin ?? 56}px; padding-right: ${rightMargin ?? 56}px;",
         class:
           "focus:outline-none print:border-0 bg-white border-[#C7C7C7]flex flex-col min-h-[1054px] w-[816px]",
       },

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BsFilePdf } from "react-icons/bs";
-import { OrganizationSwitcher,UserButton } from "@clerk/nextjs";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import {
   BoldIcon,
   FileIcon,
@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/menubar";
 import { DocumentInput } from "./document-input";
 import { useEditor, useEditorState } from "@tiptap/react";
+import { Avatars } from "./avatars";
 import { useEditorStore } from "@/app/store/use-editor-store";
 
 export const Navbar = () => {
@@ -99,48 +100,44 @@ export const Navbar = () => {
                 <MenubarContent className="print:hidden">
                   <MenubarSub>
                     <MenubarSubTrigger>
-
-                                                                      
-                  <FileIcon className="size-4 mr-2" />
-                    Save
+                      <FileIcon className="size-4 mr-2" />
+                      Save
                     </MenubarSubTrigger>
                     <MenubarSubContent>
                       <MenubarItem onClick={onSaveJson}>
-                        <FileJsonIcon className="size-4 mr-2"/>
+                        <FileJsonIcon className="size-4 mr-2" />
                         JSON
                       </MenubarItem>
-                       <MenubarItem onClick={onSaveHTML}>
-                        <GlobeIcon className="size-4 mr-2"/>
+                      <MenubarItem onClick={onSaveHTML}>
+                        <GlobeIcon className="size-4 mr-2" />
                         HTML
                       </MenubarItem>
-                       <MenubarItem  onClick={() => window.print()}>
-                        <BsFilePdf className="size-4 mr-2"/>
+                      <MenubarItem onClick={() => window.print()}>
+                        <BsFilePdf className="size-4 mr-2" />
                         PDF
                       </MenubarItem>
-                       <MenubarItem onClick={onSaveText}>
-                        <FileTextIcon className="size-4 mr-2"/>
+                      <MenubarItem onClick={onSaveText}>
+                        <FileTextIcon className="size-4 mr-2" />
                         Text
                       </MenubarItem>
-
-
                     </MenubarSubContent>
                   </MenubarSub>
                   <MenubarItem>
-                    <FilePlusIcon className="size-4 mr-2"/>
+                    <FilePlusIcon className="size-4 mr-2" />
                     New Document
                   </MenubarItem>
                   <MenubarSeparator />
                   <MenubarItem>
-                    <FilePenIcon className="size-4 mr-2"/> 
+                    <FilePenIcon className="size-4 mr-2" />
                     Rename
                   </MenubarItem>
                   <MenubarItem>
-                    <TrashIcon className="size-4 mr-2"/> 
+                    <TrashIcon className="size-4 mr-2" />
                     Remove
                   </MenubarItem>
-                  <MenubarSeparator/>
-                  <MenubarItem  onClick={()=> window.print()}>
-                    <PrinterIcon className="size-4 mr-2"/> 
+                  <MenubarSeparator />
+                  <MenubarItem onClick={() => window.print()}>
+                    <PrinterIcon className="size-4 mr-2" />
                     Print <MenubarShortcut>XP</MenubarShortcut>
                   </MenubarItem>
                 </MenubarContent>
@@ -158,22 +155,26 @@ export const Navbar = () => {
                   <MenubarSub>
                     <MenubarSubTrigger>Table</MenubarSubTrigger>
                     <MenubarSubContent>
-                      <MenubarItem onClick={()=> InsertTable({rows: 1, cols:1 })}>
+                      <MenubarItem
+                        onClick={() => InsertTable({ rows: 1, cols: 1 })}
+                      >
                         1 X 1
                       </MenubarItem>
-                      <MenubarItem onClick={()=> InsertTable({rows: 2, cols:2 })}>
-                        
+                      <MenubarItem
+                        onClick={() => InsertTable({ rows: 2, cols: 2 })}
+                      >
                         2 X 2
                       </MenubarItem>
-                      <MenubarItem onClick={()=> InsertTable({rows: 3, cols:3 })}>
-                        
+                      <MenubarItem
+                        onClick={() => InsertTable({ rows: 3, cols: 3 })}
+                      >
                         3 X 3
                       </MenubarItem>
-                      <MenubarItem  onClick={()=> InsertTable({rows: 4, cols:4 })}>
-                        
+                      <MenubarItem
+                        onClick={() => InsertTable({ rows: 4, cols: 4 })}
+                      >
                         4 x 4
                       </MenubarItem>
-
                     </MenubarSubContent>
                   </MenubarSub>
                 </MenubarContent>
@@ -185,7 +186,7 @@ export const Navbar = () => {
                 <MenubarContent>
                   <MenubarSub>
                     <MenubarSubTrigger>
-                      <TextIcon  className="size-4 mr-2"/>
+                      <TextIcon className="size-4 mr-2" />
                       Text
                     </MenubarSubTrigger>
                   </MenubarSub>
@@ -196,16 +197,16 @@ export const Navbar = () => {
         </div>
       </div>
       <div className="flex gap-3 items-center pl-6">
-                <OrganizationSwitcher
-                afterCreateOrganizationUrl="/"
-                afterLeaveOrganizationUrl="/"
-                afterSelectOrganizationUrl="/"
-                afterSelectPersonalUrl="/"
-                />
+        <Avatars />
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+        />
 
-            
-            <UserButton />
-              </div>
+        <UserButton />
+      </div>
     </nav>
   );
 };
