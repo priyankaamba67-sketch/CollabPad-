@@ -1,6 +1,6 @@
 import Link from"next/link";
 import Image from "next/image";
-import { Search } from "lucide-react";
+import { Inbox } from "lucide-react";
 import { SearchInput } from "./search-input";
 import { UserButton,OrganizationSwitcher } from "@clerk/nextjs";
 
@@ -15,6 +15,7 @@ export const Navbar = () => {
             </div>
             <SearchInput />
             <div className="flex gao-3 items-center">
+                <Inbox/>
                 <OrganizationSwitcher
                 afterCreateOrganizationUrl="/"
                 afterLeaveOrganizationUrl="/"

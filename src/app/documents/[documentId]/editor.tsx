@@ -14,8 +14,6 @@ import { LineHeightExtension } from "@/extensions/line-height";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 import { useEditorStore } from "@/app/store/use-editor-store";
-import { useStorage } from "@liveblocks/react";
-import { types } from "util";
 import { FontSizeExtension } from "@/extensions/font-size";
 
 import { Collaboration } from "@tiptap/extension-collaboration";
@@ -24,9 +22,12 @@ import * as Y from "yjs";
 import { LiveblocksYjsProvider } from "@liveblocks/yjs";
 import { useRoom } from "@liveblocks/react";
 
-export const Editor = () => {
-  const leftMargin= useStorage((root)=>root.leftMargin);
-  const rightMargin=useStorage((root)=>root.rightMargin);
+interface EditorProps{
+  initialContent?:string |undefined;
+
+};
+
+export const Editor = ({initialContent}:EditorProps) => {
   const { setEditor } = useEditorStore();
   const room = useRoom();
 
@@ -39,7 +40,7 @@ export const Editor = () => {
   const editor = useEditor({
     editorProps: {
       attributes: {
-        style: "padding-left:${lefrMargin ?? 56}px; padding-right: ${rightMargin ?? 56}px;",
+        style: "padding-left:${lefrMargin }px; padding-right: ${rightMargin}px;",
         class:
           "focus:outline-none print:border-0 bg-white border-[#C7C7C7]flex flex-col min-h-[1054px] w-[816px]",
       },
@@ -98,6 +99,7 @@ export const Editor = () => {
     <div className="size-full overflow-x-auto bg-[#f9fbfd] px-4 print:p-0 print:bg-white print:overflow-visible">
       <div className="min-w-max flex  justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
         <EditorContent editor={editor} />
+        {/* <Threads editor={editor}/> */}
       </div>
     </div>
   );

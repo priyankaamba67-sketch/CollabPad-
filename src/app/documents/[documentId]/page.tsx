@@ -1,17 +1,31 @@
-// import { Document } from "./document";
-// import { Id } from "../../../../convex/_generated/dataModel";
+import { preloadQuery } from "convex/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
-// interface DocumentIdProps {
-//   params: Promise<{ documentId: Id<"documents"> }>;
-// }
+import { Document } from "./document";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
 
-// const DocumentIdPage = async ({ params }: DocumentIdPageProps) => {
-//   const { documentId } = await params;
+interface DocumentIdPageProps {
+  params: Promise<{ documentId: Id<"documents"> }>;
+}
 
-//   return <Document />;
-// };
+const DocumentIdPage = async ({ params }: DocumentIdPageProps) => {
+  const { documentId } = await params;
 
-// export default DocumentIdPage;
+  const { getToken } = await auth();
+  const token = (await getToken({ template: "convex" })) ?? undefined;
 
+  if (!token) {
+    throw new Error("unauthorized");
+  }
+  const preloadedDocument = await preloadQuery(
+    api.documents.getById,
+    { id: documentId },
+    { token }
+  );
+ 
 
-//todo : continue youtube video from : 8;57;25
+  return <Document preloadedDocument={preloadedDocument} />;
+};
+
+export default DocumentIdPage;

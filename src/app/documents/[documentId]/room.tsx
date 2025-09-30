@@ -8,19 +8,25 @@ import {
 } from "@liveblocks/react/suspense";
 import { useParams } from "next/navigation";
 import { FullscreenLoader } from "@/components/fullscreen-loader";
-import { getUsers,getDocuments} from "./actions";
+import { getUsers, getDocuments } from "./actions";
 import { toast } from "sonner";
-import{Id} from"../../../../convex/_generated/dataModel";
+import { Id } from "../../../../convex/_generated/dataModel";
 
-type User = { id: string; name: string; avatar: string };
+type User = { id: string; name: string; avatar: string; color: string };
 type UserMeta = {
   id: string;
   name: string;
   avatar: string;
 };
-export function Room({ children, documentId }: { children: ReactNode, documentId:string }) {
+export function Room({
+  children,
+  documentId,
+}: {
+  children: ReactNode;
+  documentId: string;
+}) {
   const params = useParams();
-
+  const effectiveDocumentId = documentId ?? (params.documentId as string);
   const [users, setUsers] = useState<User[]>([]);
 
   const fetchUsers = useMemo(
@@ -42,16 +48,16 @@ export function Room({ children, documentId }: { children: ReactNode, documentId
   return (
     <LiveblocksProvider<UserMeta>
       throttle={16}
-      authEndpoint={async()=>{
-        const endpoint="/api/liveblocks-auth";
-        const room= params.documentId as string;
+      authEndpoint={async () => {
+        const endpoint = "/api/liveblocks-auth";
+        const room = effectiveDocumentId;
 
-        const response =await fetch(endpoint,{
-          method:"POST",
-          body:JSON.stringify({room}),
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: JSON.stringify({ room }),
         });
 
-return await response.json();        
+        return await response.json();
       }}
       resolveUsers={({ userIds }) => {
         return userIds.map(
@@ -68,16 +74,15 @@ return await response.json();
         }
         return filteredUsers.map((user) => user.id);
       }}
-      resolveRoomsInfo={async({ roomIds })=>{
-        const documents=await getDocuments(roomIds as Id<"documents">[]);
-        return documents.map((document)=>({
-          id:document.id,
-          name:document.name,
+      resolveRoomsInfo={async ({ roomIds }) => {
+        const documents = await getDocuments(roomIds as Id<"documents">[]);
+        return documents.map((document) => ({
+          id: document.id,
+          name: document.name,
         }));
-
       }}
     >
-      <RoomProvider id={documentId as string}>
+      <RoomProvider id={effectiveDocumentId}>
         <ClientSideSuspense
           fallback={<FullscreenLoader label="Room loading..." />}
         >

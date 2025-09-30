@@ -16,8 +16,6 @@ import {
   Link2Icon,
   List,
   ListCollapseIcon,
-  ListIcon,
-  ListOrdered,
   ListOrderedIcon,
   ListTodoIcon,
   LucideIcon,
@@ -51,10 +49,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {TextAlign} from "@tiptap/extension-text-align";
-import { useSearchParams } from "next/navigation";
-import { parse } from "path";
-import { Value } from "@radix-ui/react-select";
 
 const LineHeightButton = () => {
   const { editor } = useEditorStore();
