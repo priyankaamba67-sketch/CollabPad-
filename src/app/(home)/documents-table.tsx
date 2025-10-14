@@ -36,8 +36,8 @@ export const DocumentsTabel = ({
           <TableHeader>
             <TableRow className="hover:bg-transparent border-none">
               <TableHead>Name</TableHead>
-              <TableHead className="hidden md: table-cell">Shared</TableHead>
-              <TableHead className="hidden md: table-cell">
+              <TableHead className="md: table-cell">Shared</TableHead>
+              <TableHead className="md: table-cell">
                 Created at{" "}
               </TableHead>
             </TableRow>
