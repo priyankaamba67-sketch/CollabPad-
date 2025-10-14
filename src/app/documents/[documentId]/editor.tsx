@@ -21,6 +21,7 @@ import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import * as Y from "yjs";
 import { LiveblocksYjsProvider } from "@liveblocks/yjs";
 import { useRoom } from "@liveblocks/react";
+import { useUser } from "@clerk/clerk-react";
 
 interface EditorProps{
   initialContent?:string |undefined;
@@ -30,6 +31,10 @@ interface EditorProps{
 export const Editor = ({initialContent}:EditorProps) => {
   const { setEditor } = useEditorStore();
   const room = useRoom();
+  const { user } = useUser();
+  const userFullName = user?.fullName || user?.firstName || "Anonymous";
+
+  console.log("Editor received initialContent:", initialContent); // Debug log
 
   const ydoc = React.useMemo(() => new Y.Doc(), []);
   const provider = React.useMemo(
@@ -38,16 +43,21 @@ export const Editor = ({initialContent}:EditorProps) => {
   );
 
   const editor = useEditor({
+    autofocus: true,
+    editable: true,
+    injectCSS: true,
+    content: initialContent,
     editorProps: {
       attributes: {
-        style: "padding-left:${lefrMargin }px; padding-right: ${rightMargin}px;",
-        class:
-          "focus:outline-none print:border-0 bg-white border-[#C7C7C7]flex flex-col min-h-[1054px] w-[816px]",
+        class: "focus:outline-none print:border-0 bg-white border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px]",
       },
     },
 
     extensions: [
-      StarterKit.configure({ undoRedo: false }),
+      StarterKit.configure({
+        undoRedo: false,
+        bulletList: false, // Disable bulletList from StarterKit since we're adding it separately
+      }),
       LineHeightExtension.configure({
         types: ["heading", "paragraph"],
         defaultLineHeight: "normal",
@@ -56,7 +66,6 @@ export const Editor = ({initialContent}:EditorProps) => {
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
-
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -81,14 +90,19 @@ export const Editor = ({initialContent}:EditorProps) => {
       CollaborationCaret.configure({
         provider,
         user: {
-          name: "Cyndi Lauper",
+          name: userFullName,
           color: "#f783ac",
         },
       }),
     ],
-    content: ``,
-    immediatelyRender: false,
+    immediatelyRender: true,
   });
+
+  useEffect(() => {
+    if (editor && initialContent) {
+      editor.commands.setContent(initialContent);
+    }
+  }, [editor, initialContent]);
 
   useEffect(() => {
     setEditor(editor);

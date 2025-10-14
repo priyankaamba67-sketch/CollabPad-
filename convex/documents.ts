@@ -37,7 +37,7 @@ export const create = mutation({
       title: args.title ?? "untitled document",
       ownerId: user.subject,
       organizationId,
-      initialContent: args.initialContent,
+      initialContent: args.initialContent ?? '',
     });
   },
 });

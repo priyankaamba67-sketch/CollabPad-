@@ -36,7 +36,6 @@ export const DocumentsTabel = ({
           <TableHeader>
             <TableRow className="hover:bg-transparent border-none">
               <TableHead>Name</TableHead>
-              <TableHead>&nbps;</TableHead>
               <TableHead className="hidden md: table-cell">Shared</TableHead>
               <TableHead className="hidden md: table-cell">
                 Created at{" "}

@@ -21,14 +21,14 @@ const AvatarStack = () => {
   if (users.length === 0) return null;
   return (
     <>
-      <div className="flext items-center">
+      <div className="flex items-center gap-2">
         {currentUser && (
-          <div className="relative ml-2">
+          <div className="relative">
             <Avatar src={currentUser.info.avatar} name="you" />
           </div>
         )}
-
-        <div className="flex">
+        
+        <div className="flex items-center">
           {users.map(({ connectionId, info }) => {
             return (
               <Avatar key={connectionId} src={info.avatar} name={info.name} />

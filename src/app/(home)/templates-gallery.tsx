@@ -22,9 +22,14 @@ export const TemplatesGallery = () => {
 
   const onTemplateClick = (title: string, initialContent: string) => {
     setCreating(true);
+    console.log("Creating document with:", { title, initialContent }); // Debug log
     create({ title, initialContent })
-      .catch(() => toast.error("Somthing went wrong"))
+      .catch((error) => {
+        console.error("Error creating document:", error); // Debug log
+        toast.error("Something went wrong");
+      })
       .then((documentId) => {
+        console.log("Document created with ID:", documentId); // Debug log
         toast.success("Document created");
         router.push(`/documents/${documentId}`);
       })
